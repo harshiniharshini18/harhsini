@@ -1,0 +1,344 @@
+PROGRAM:01 Array Operations 
+#include<stdio.h> 
+int a[20],n=0; 
+void main(){ 
+ int ch,pos,val,i; 
+ while(1){ 
+  printf("\n1.Create 2.Display 3.Insert 4.Delete 5.Exit\n"); 
+  scanf("%d",&ch); 
+  switch(ch){ 
+   case 1: printf("Enter n: "); scanf("%d",&n); 
+           for(i=0;i<n;i++) scanf("%d",&a[i]); break; 
+   case 2: for(i=0;i<n;i++) printf("%d ",a[i]); break; 
+   case 3: scanf("%d%d",&pos,&val); 
+           for(i=n;i>pos;i--) a[i]=a[i-1]; 
+           a[pos]=val; n++; break; 
+   case 4: scanf("%d",&pos); 
+           for(i=pos;i<n-1;i++) a[i]=a[i+1]; 
+           n--; break; 
+   case 5: return; 
+  } 
+ } 
+} 
+OUTPUT: 
+1.Create 
+Enter n: 4 
+10 20 30 40 
+2.Display 
+10 20 30 40 
+3.Insert 
+0 50 
+2.Display 
+50 10 20 30 40 
+ 
+PROGRAM:02String Pattern Matching 
+#include<stdio.h> 
+char s[100],p[50],r[50],ans[100]; 
+void main(){ 
+ int i=0,j=0,k=0,f=0; 
+ gets(s); gets(p); gets(r); 
+ while(s[i]){ 
+  if(s[i]==p[0]){ 
+   for(k=0;p[k]&&s[i+k]==p[k];k++); 
+   if(!p[k]){ 
+    for(k=0;r[k];k++) ans[j++]=r[k]; 
+    i+=k; f=1; continue; 
+   } 
+  } 
+  ans[j++]=s[i++]; 
+ } 
+ ans[j]='\0'; 
+ if(f) printf("%s",ans); 
+ else printf("Pattern not found"); 
+} 
+OUTPUT: 
+Input: 
+atme college of engg 
+engg 
+engineering 
+ 
+Output: 
+atme college of engineering 
+ 
+PROGRAM03: Stack Operations 
+#include<stdio.h> 
+#define MAX 4 
+int s[MAX],top=-1; 
+void main(){ 
+ int ch,x,i; 
+ while(1){ 
+  printf("\n1.Push 2.Pop 3.Display 4.Exit\n"); 
+  scanf("%d",&ch); 
+  switch(ch){ 
+   case 1: if(top==MAX-1) printf("Overflow"); 
+           else scanf("%d",&s[++top]); break; 
+   case 2: if(top==-1) printf("Underflow"); 
+           else printf("%d",s[top--]); break; 
+   case 3: for(i=top;i>=0;i--) printf("%d ",s[i]); break; 
+   case 4: return; 
+  } 
+ } 
+} 
+OUTPUT 
+Push: 10 20 30 40 
+Push: Overflow 
+Display: 40 30 20 10 
+Pop: 40 
+ 
+PROGRAM4: Infix to Postfix 
+#include<stdio.h> 
+#include<ctype.h> 
+char s[50]; int top=-1; 
+int p(char c){ return (c=='+'||c=='-')?1:(c=='*'||c=='/')?2:0; } 
+void main(){ 
+ char in[50],po[50]; int i=0,k=0; 
+ gets(in); s[++top]='#'; 
+ while(in[i]){ 
+  if(isalnum(in[i])) po[k++]=in[i]; 
+  else{ 
+   while(p(s[top])>=p(in[i])) po[k++]=s[top--]; 
+   s[++top]=in[i]; 
+  } i++; 
+ } 
+ while(s[top]!='#') po[k++]=s[top--]; 
+ po[k]='\0'; 
+ printf("%s",po); 
+} 
+OUTPUT: 
+Input: (a+b)*c 
+Output: ab+c* 
+PROGRAM5 
+A. Postfix Evaluation 
+#include<stdio.h> 
+#include<math.h> 
+int s[20],top=-1; 
+void main(){ 
+ char p[20]; int i,a,b; 
+ gets(p); 
+ for(i=0;p[i];i++){ 
+  if(isdigit(p[i])) s[++top]=p[i]-'0'; 
+  else{ 
+   b=s[top--]; a=s[top--]; 
+   switch(p[i]){ 
+    case '+':s[++top]=a+b;break; 
+    case '-':s[++top]=a-b;break; 
+    case '*':s[++top]=a*b;break; 
+    case '/':s[++top]=a/b;break; 
+    case '^':s[++top]=pow(a,b); 
+   } 
+  } 
+ } 
+ printf("Result = %d",s[top]); 
+} 
+OUTPUT: 
+Input: 23+ 
+Result = 5 
+B. Tower of Hanoi 
+ #include<stdio.h> 
+void toh(int n,char a,char b,char c){ 
+ if(n==1){ printf("Move %c -> %c\n",a,c); return; } 
+ toh(n-1,a,c,b); 
+ printf("Move %c -> %c\n",a,c); 
+ toh(n-1,b,a,c); 
+} 
+void main(){ 
+ int n; scanf("%d",&n); 
+ toh(n,'A','B','C'); 
+} 
+OUTPUT: 
+Input: 3 
+Move A -> C 
+Move A -> B 
+Move C -> B 
+Move A -> C 
+Move B -> A 
+Move B -> C 
+Move A -> C 
+PROGRAM6 Circular Queue 
+#include<stdio.h> 
+#define MAX 5 
+char q[MAX]; int f=0,r=-1,c=0; 
+void main(){ 
+ int ch; char x; 
+ while(1){ 
+  printf("\n1.Insert 2.Delete 3.Display 4.Exit\n"); 
+  scanf("%d",&ch); 
+  if(ch==1){ 
+   if(c==MAX) printf("Overflow"); 
+   else{ scanf(" %c",&x); r=(r+1)%MAX; q[r]=x; c++; } 
+  } 
+  else if(ch==2){ 
+   if(c==0) printf("Underflow"); 
+   else{ printf("%c",q[f]); f=(f+1)%MAX; c--; } 
+  } 
+  else if(ch==3){ 
+   int i=f,j; 
+   for(j=0;j<c;j++){ printf("%c ",q[i]); i=(i+1)%MAX; } 
+  } 
+  else return; 
+ } 
+} 
+OUTPUT: 
+Insert: A B C 
+Display: A B C 
+Delete: A 
+Display: B C 
+ 
+PROGRAM7 SINGLY Linked List 
+#include<stdio.h> 
+#include<stdlib.h> 
+struct n{int d; struct n*link;}*h=NULL; 
+void main(){ 
+ int ch,x; struct n*t,*p; 
+ while(1){ 
+  printf("\n1.InsertF 2.InsertR 3.DeleteF 4.Display 5.Exit\n"); 
+  scanf("%d",&ch); 
+  if(ch==1){ 
+   t=malloc(sizeof(*t)); scanf("%d",&t->d); 
+   t->link=h; h=t; 
+  } 
+  else if(ch==2){ 
+   t=malloc(sizeof(*t)); scanf("%d",&t->d); t->link=NULL; 
+   if(!h) h=t; 
+   else{ p=h; while(p->link) p=p->link; p->link=t; } 
+  } 
+  else if(ch==3){ 
+   if(h){ t=h; h=h->link; free(t); } 
+  } 
+  else if(ch==4){ 
+   for(p=h;p;p=p->link) printf("%d ",p->d); 
+  } 
+  else return; 
+ } 
+} 
+OUTPUT 
+InsertF: 10 
+InsertR: 20 
+Display: 10 20 
+DeleteF 
+Display: 20 
+PROGRAM8 Doubly Linked List 
+#include<stdio.h> 
+#include<stdlib.h> 
+struct n{int d;struct n*l,*r;}*h=NULL,*t; 
+void main(){ 
+ int ch,x; struct n*p; 
+ while(1){ 
+  printf("\n1.Insert 2.Delete 3.Display 4.Exit\n"); 
+  scanf("%d",&ch); 
+  if(ch==1){ 
+   t=malloc(sizeof(*t)); scanf("%d",&t->d); 
+   t->l=NULL; t->r=h; 
+   if(h) h->l=t; h=t; 
+  } 
+  else if(ch==2){ 
+   if(h){ t=h; h=h->r; if(h) h->l=NULL; free(t); } 
+  } 
+  else if(ch==3){ 
+   for(p=h;p;p=p->r) printf("%d ",p->d); 
+  } 
+  else return; 
+ } 
+} 
+OUTPUT: 
+Insert: 10 20 
+Display: 20 10 
+Delete 
+Display: 10 
+PROGRAM9 Polynomial Evaluation using SCLL 
+#include<stdio.h> 
+#include<stdlib.h> 
+struct n{int c,p;struct n*link;}*h=NULL,*t; 
+void main(){ 
+ int x,sum=0; struct n*p; 
+ t=h=malloc(sizeof(*h)); h->link=h; 
+ printf("Enter coeff & power (-1 to stop):\n"); 
+ while(1){ 
+  p=malloc(sizeof(*p)); 
+  scanf("%d",&p->c); 
+  if(p->c==-1) break; 
+  scanf("%d",&p->p); 
+  p->link=h; t->link=p; t=p; 
+ } 
+ printf("Enter x: "); scanf("%d",&x); 
+ for(p=h->link;p!=h;p=p->link) sum+=p->c*pow(x,p->p); 
+ printf("Result = %d",sum); 
+} 
+OUTPUT: 
+Enter coeff & power: 
+3 2 
+2 1 -1 
+Enter x: 2 
+Result = 16 
+PROGRAM10 Binary Search Tree 
+#include<stdio.h> 
+#include<stdlib.h> 
+struct n{int d;struct n*l,*r;}*t=NULL; 
+struct n*ins(struct n*t,int x){ 
+ if(!t){ t=malloc(sizeof(*t)); t->d=x;t->l=t->r=NULL; } 
+ else if(x<t->d) t->l=ins(t->l,x); 
+ else t->r=ins(t->r,x); 
+ return t; 
+} 
+void in(struct n*t){ if(t){ in(t->l); printf("%d ",t->d); in(t->r);} } 
+void main(){ 
+ int a[]={6,9,5,2,8,15,24,14,7},i; 
+ for(i=0;i<9;i++) t=ins(t,a[i]); 
+ in(t); 
+} 
+OUTPUT 
+2 5 6 7 8 9 14 15 24 
+PROGRAM 11Graph BFS 
+#include<stdio.h> 
+int g[10][10],n,v[10]={0},q[10],f=0,r=-1; 
+void bfs(int s){ 
+ int i; v[s]=1; q[++r]=s; 
+ while(f<=r){ 
+  s=q[f++]; printf("%d ",s); 
+  for(i=0;i<n;i++) 
+   if(g[s][i] && !v[i]){ q[++r]=i; v[i]=1; } 
+ } 
+} 
+void main(){ 
+ int i,j; 
+ scanf("%d",&n); 
+ for(i=0;i<n;i++) 
+  for(j=0;j<n;j++) scanf("%d",&g[i][j]); 
+ bfs(0); 
+} 
+OUTPUT 
+Input: 
+4 
+0 1 1 0 
+1 0 0 1 
+1 0 0 1 
+0 1 1 0 
+ 
+Output: 
+0 1 2 3 
+PROGRAM:12 Hashing with Linear Probing 
+#include<stdio.h> 
+#define M 10 
+int h[M]={0}; 
+void main(){ 
+ int k,i,p,n; 
+ scanf("%d",&n); 
+ while(n--){ 
+  scanf("%d",&k); 
+  p=k%M; 
+  while(h[p]) p=(p+1)%M; 
+  h[p]=k; 
+ } 
+ for(i=0;i<M;i++) printf("%d -> %d\n",i,h[i]); 
+} 
+OUTPUT 
+Input: 
+4 
+23 43 13 27 
+ 
+Output: 
+3 -> 23 
+4 -> 43 
+5 -> 13 
+7 -> 27 
+ 
